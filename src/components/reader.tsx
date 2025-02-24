@@ -5,22 +5,23 @@ import ActionButton from "./action-button";
 import ScanPending from "./scan-pending";
 
 export default function Reader() {
-	const { read } = useWebNFC();
-	const [readData, setReadSata] = useState<unknown | null>(null);
+	const { data, error, clear, read } = useWebNFC();
 	const [willScan, setWillScan] = useState(false);
 
 	function reset() {
-		setReadSata(null);
+		clear();
 		setWillScan(true);
 	}
 
 	async function handleScan() {
 		reset();
-		const data = await read();
+		await read();
 
-		setReadSata(data);
 		setWillScan(false);
 	}
+
+	// TODO: Add error state
+	if (error) return <></>;
 
 	return (
 		<>
@@ -28,9 +29,9 @@ export default function Reader() {
 				Press "Scan now" and then touch an NFC sticker or card to your phone to
 				read its content.
 			</p>
-			{readData && (
+			{data && (
 				<pre className="bg-gray-800 p-4 rounded text-sm text-gray-200 w-full overflow-x-auto mb-6">
-					{JSON.stringify(readData)}
+					{JSON.stringify(data)}
 				</pre>
 			)}
 			{willScan ? (
@@ -38,11 +39,11 @@ export default function Reader() {
 			) : (
 				<ActionButton
 					onClick={handleScan}
-					color={readData ? "gray" : "yellow"}
+					color={data ? "gray" : "yellow"}
 					type="button"
 				>
 					<QrCodeIcon className="size-5" />
-					Scan {readData ? "again" : "now"}
+					Scan {data ? "again" : "now"}
 				</ActionButton>
 			)}
 		</>

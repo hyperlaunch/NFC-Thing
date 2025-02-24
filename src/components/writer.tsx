@@ -7,12 +7,13 @@ import Textbox from "./textbox";
 import WriteSuccess from "./write-success";
 
 export default function Writer() {
-	const { write } = useWebNFC();
+	const { write, error, clear } = useWebNFC();
 
 	const [willScan, setWillScan] = useState(false);
 	const [didWrite, setDidWrite] = useState(false);
 
 	function reset() {
+		clear();
 		setWillScan(false);
 		setDidWrite(false);
 	}
@@ -35,8 +36,12 @@ export default function Writer() {
 
 		e.preventDefault();
 
-		// TODO: Submit parent form
+		const form = e.currentTarget.closest("form");
+		form?.requestSubmit();
 	}
+
+	// TODO: Add error state
+	if (error) return <></>;
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -61,8 +66,6 @@ export default function Writer() {
 						required
 						rows={4}
 						placeholder="Enter content to write to NFC tag"
-						enterKeyHint="send"
-						onKeyDown={handleKeyDown}
 					/>
 					<ActionButton color="yellow" type="submit">
 						<ArrowsRightLeftIcon className="size-5" />
