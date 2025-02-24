@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
-import { build, type BuildConfig } from "bun";
+import { existsSync } from "node:fs";
+import { rm } from "node:fs/promises";
+import path from "node:path";
+import { type BuildConfig, build } from "bun";
 import plugin from "bun-plugin-tailwind";
-import { existsSync } from "fs";
-import { rm } from "fs/promises";
-import path from "path";
 
 // Print help text if requested
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
@@ -41,14 +41,15 @@ const toCamelCase = (str: string): string => {
 };
 
 // Helper function to parse a value into appropriate type
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const parseValue = (value: string): any => {
 	// Handle true/false strings
 	if (value === "true") return true;
 	if (value === "false") return false;
 
 	// Handle numbers
-	if (/^\d+$/.test(value)) return parseInt(value, 10);
-	if (/^\d*\.\d+$/.test(value)) return parseFloat(value);
+	if (/^\d+$/.test(value)) return Number.parseInt(value, 10);
+	if (/^\d*\.\d+$/.test(value)) return Number.parseFloat(value);
 
 	// Handle arrays (comma-separated)
 	if (value.includes(",")) return value.split(",").map((v) => v.trim());
@@ -59,6 +60,7 @@ const parseValue = (value: string): any => {
 
 // Magical argument parser that converts CLI args to BuildConfig
 function parseArgs(): Partial<BuildConfig> {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const config: Record<string, any> = {};
 	const args = process.argv.slice(2);
 
