@@ -4,6 +4,7 @@ import Header from "./components/header";
 import "./index.css";
 import Reader from "./components/reader";
 import Tabs from "./components/tabs";
+import Writer from "./components/writer";
 
 export function App() {
 	return (
@@ -14,7 +15,9 @@ export function App() {
 				<Route path="/">
 					<Reader />
 				</Route>
-				<Route path="/write" />
+				<Route path="/write">
+					<Writer />
+				</Route>
 			</Switch>
 			<Footer />
 		</div>
