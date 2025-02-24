@@ -12,23 +12,25 @@ export function App() {
 	const { browserSupports } = useWebNFC();
 
 	return (
-		<div className="w-full max-w-sm mx-auto">
+		<div className="w-full max-w-md mx-auto min-h-svh flex flex-col p-8 ">
 			<Header />
-			{browserSupports ? (
-				<>
-					<Tabs />
-					<Switch>
-						<Route path="/">
-							<Reader />
-						</Route>
-						<Route path="/write">
-							<Writer />
-						</Route>
-					</Switch>
-				</>
-			) : (
-				<BrowserError />
-			)}
+			<div className="flex-grow">
+				{browserSupports ? (
+					<>
+						<Tabs />
+						<Switch>
+							<Route path="/">
+								<Reader />
+							</Route>
+							<Route path="/write">
+								<Writer />
+							</Route>
+						</Switch>
+					</>
+				) : (
+					<BrowserError />
+				)}
+			</div>
 			<Footer />
 		</div>
 	);
