@@ -1,6 +1,8 @@
-import { QrCodeIcon } from "@heroicons/react/24/solid";
+import useNFCReader from "@/hooks/use-nfc-reader";
+import { QrCodeIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ActionButton from "./action-button";
+import BrowserError from "./browser-error";
 import ScanPending from "./scan-pending";
 
 export default function Reader() {

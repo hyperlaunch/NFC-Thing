@@ -1,4 +1,4 @@
-import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
+import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ActionButton from "./action-button";
 import ScanPending from "./scan-pending";

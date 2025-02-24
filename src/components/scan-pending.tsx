@@ -1,4 +1,4 @@
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import type { ReactNode } from "react";
 
 export default function ScanPending({
