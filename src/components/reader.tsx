@@ -5,18 +5,17 @@ import ActionButton from "./action-button";
 import ScanPending from "./scan-pending";
 
 export default function Reader() {
-	const { data, error, clear, read } = useWebNFC();
+	const { data, error, abort, read } = useWebNFC();
 	const [willScan, setWillScan] = useState(false);
 
 	function reset() {
-		clear();
-		setWillScan(true);
+		abort();
+		setWillScan(false);
 	}
 
 	async function handleScan() {
-		reset();
+		setWillScan(true);
 		await read();
-
 		setWillScan(false);
 	}
 

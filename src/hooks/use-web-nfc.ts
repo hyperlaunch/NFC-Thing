@@ -11,7 +11,7 @@ export default function useWebNFC() {
 		setBrowserSupports("NDEFReader" in window);
 	}, []);
 
-	const clear = () => {
+	const abort = () => {
 		if (abortControllerRef.current) {
 			abortControllerRef.current.abort();
 			abortControllerRef.current = null;
@@ -29,7 +29,7 @@ export default function useWebNFC() {
 
 	const read = () => {
 		return new Promise((resolve, reject) => {
-			clear();
+			abort();
 			const ndef = new NDEFReader();
 			ndefReaderRef.current = ndef;
 			abortControllerRef.current = new AbortController();
@@ -68,7 +68,7 @@ export default function useWebNFC() {
 
 	const write = (data: string) => {
 		return new Promise((resolve, reject) => {
-			clear();
+			abort();
 			const ndef = new NDEFReader();
 			ndefReaderRef.current = ndef;
 			abortControllerRef.current = new AbortController();
@@ -88,5 +88,5 @@ export default function useWebNFC() {
 		});
 	};
 
-	return { data, error, read, write, clear, browserSupports };
+	return { data, error, read, write, abort, browserSupports };
 }

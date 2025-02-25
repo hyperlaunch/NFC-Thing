@@ -1,8 +1,7 @@
 import { Route, Switch } from "wouter";
+import BrowserError from "./components/browser-error";
 import Footer from "./components/footer";
 import Header from "./components/header";
-import "./index.css";
-import BrowserError from "./components/browser-error";
 import Reader from "./components/reader";
 import Tabs from "./components/tabs";
 import Writer from "./components/writer";

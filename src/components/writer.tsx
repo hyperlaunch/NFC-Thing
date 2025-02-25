@@ -7,13 +7,13 @@ import Textbox from "./textbox";
 import WriteSuccess from "./write-success";
 
 export default function Writer() {
-	const { write, error, clear } = useWebNFC();
+	const { write, error, abort } = useWebNFC();
 
 	const [willScan, setWillScan] = useState(false);
 	const [didWrite, setDidWrite] = useState(false);
 
 	function reset() {
-		clear();
+		abort();
 		setWillScan(false);
 		setDidWrite(false);
 	}

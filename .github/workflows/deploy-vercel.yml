@@ -1,0 +1,45 @@
+name: Build and Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Build project
+        run: bun run build
+
+      - name: Initialize Vercel
+        run: |
+          npm i -g vercel
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Prepare for Vercel deployment
+        run: |
+          mkdir -p .vercel/output
+          mv dist .vercel/output/static
+          echo '{ "version": 3 }' > .vercel/output/config.json
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --name $BRANCH_NAME
+          fi
