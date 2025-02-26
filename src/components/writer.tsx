@@ -2,6 +2,7 @@ import useWebNFC from "@/hooks/use-web-nfc";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import { type FormEvent, type KeyboardEvent, useState } from "react";
 import ActionButton from "./action-button";
+import ReaderError from "./reader-error";
 import ScanPending from "./scan-pending";
 import Textbox from "./textbox";
 import WriteSuccess from "./write-success";
@@ -24,24 +25,24 @@ export default function Writer() {
 
 		const form = e.target as HTMLFormElement;
 		const message = form.querySelector("textarea")?.value || "";
+		try {
+			await write(message);
 
-		await write(message);
-
-		setWillScan(false);
-		setDidWrite(true);
+			setWillScan(false);
+			setDidWrite(true);
+		} catch (_) {}
 	}
 
-	function handleKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
-		if (e.key !== "Enter") return;
-
-		e.preventDefault();
-
-		const form = e.currentTarget.closest("form");
-		form?.requestSubmit();
-	}
-
-	// TODO: Add error state
-	if (error) return <></>;
+	if (error)
+		return (
+			<>
+				<ReaderError />
+				<ActionButton color="gray" type="button" onClick={reset}>
+					<ArrowsRightLeftIcon className="size-5" />
+					Try again
+				</ActionButton>
+			</>
+		);
 
 	return (
 		<form onSubmit={handleSubmit}>

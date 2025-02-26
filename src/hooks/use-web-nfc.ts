@@ -82,6 +82,7 @@ export default function useWebNFC() {
 					if (error.name === "AbortError") {
 						console.log("NFC write was aborted");
 					} else {
+						setError(error);
 						reject(`Error writing to NFC: ${error}`);
 					}
 				});

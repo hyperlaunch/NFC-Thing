@@ -2,6 +2,7 @@ import useWebNFC from "@/hooks/use-web-nfc";
 import { QrCodeIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ActionButton from "./action-button";
+import ReaderError from "./reader-error";
 import ScanPending from "./scan-pending";
 
 export default function Reader() {
@@ -14,13 +15,23 @@ export default function Reader() {
 	}
 
 	async function handleScan() {
-		setWillScan(true);
-		await read();
-		setWillScan(false);
+		try {
+			setWillScan(true);
+			await read();
+			setWillScan(false);
+		} catch (_) {}
 	}
 
-	// TODO: Add error state
-	if (error) return <></>;
+	if (error)
+		return (
+			<>
+				<ReaderError />
+				<ActionButton onClick={handleScan} color="gray" type="button">
+					<QrCodeIcon className="size-5" />
+					Try again
+				</ActionButton>
+			</>
+		);
 
 	return (
 		<>
