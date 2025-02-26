@@ -19,7 +19,9 @@ export default function Reader() {
 			setWillScan(true);
 			await read();
 			setWillScan(false);
-		} catch (_) {}
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
 	if (error)

@@ -30,7 +30,9 @@ export default function Writer() {
 
 			setWillScan(false);
 			setDidWrite(true);
-		} catch (_) {}
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
 	if (error)
