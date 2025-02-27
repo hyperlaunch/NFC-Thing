@@ -1,0 +1,19 @@
+name: SCC Code Report
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: # Set permissions at workflow level - to ensure the check can be written
+  contents: read
+  checks: write
+
+jobs:
+  scc_count:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run SCC Code Report
+        uses: hyperlaunch/scc-check-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
